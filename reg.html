@@ -1,0 +1,1267 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Fest Registration</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="/_sdk/data_sdk.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    * { font-family: 'Poppins', sans-serif; }
+    
+    html, body { height: 100%; }
+    
+    body { 
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      overflow: auto;
+    }
+    
+    .form-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      animation: slideUp 0.5s ease-out;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    
+    @keyframes popCheck {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(-45deg);
+        opacity: 0;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.3);
+      }
+      75% {
+        transform: translate(-50%, -50%) scale(0.9);
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+    
+    .section-content {
+      animation: fadeIn 0.3s ease-out;
+    }
+    
+    .success-animation {
+      animation: scaleIn 0.5s ease-out;
+    }
+    
+    /* Event Checkbox Styling */
+    .event-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid #e5e7eb;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background-color: white;
+      position: relative;
+    }
+    
+    .event-checkbox:hover {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .event-checkbox:checked {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+    
+    .event-checkbox:checked::after {
+      content: '✓';
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      animation: popCheck 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .event-item {
+      padding: 16px;
+      border: 2px solid #f3f4f6;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      cursor: pointer;
+    }
+    
+    .event-item:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+      border-color: #667eea;
+    }
+    
+    .event-item.selected {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-color: #667eea;
+    }
+    
+    .event-price {
+      margin-left: auto;
+      font-weight: 600;
+      color: #667eea;
+      font-size: 14px;
+    }
+    
+    .payment-method {
+      padding: 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .payment-method:hover {
+      border-color: #667eea;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+    }
+    
+    .payment-method.selected {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-color: #667eea;
+    }
+    
+    .radio-custom {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #e5e7eb;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background-color: white;
+    }
+    
+    .radio-custom:hover {
+      border-color: #667eea;
+    }
+    
+    .radio-custom:checked {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-color: #667eea;
+      box-shadow: inset 0 0 0 2px white, 0 0 0 2px #667eea;
+    }
+    
+    .input-field {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid #e5e7eb;
+      padding: 12px 0;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-bottom-color: #667eea;
+      background: linear-gradient(to bottom, rgba(102, 126, 234, 0.05), transparent);
+      box-shadow: 0 2px 0 #667eea;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: #667eea;
+      padding: 12px 28px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border-color: #667eea;
+    }
+    
+    .price-tag {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .fee-box {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border: 2px solid #667eea;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    
+    .fee-box-title {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    
+    .fee-box-amount {
+      font-size: 28px;
+      font-weight: 700;
+      color: #667eea;
+    }
+    
+    .payment-details-box {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px 0;
+      display: none;
+    }
+    
+    .payment-details-box.show {
+      display: block;
+      animation: slideUp 0.3s ease-out;
+    }
+    
+    .section-header {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .required-asterisk {
+      color: #ef4444;
+    }
+    
+    .error-text {
+      color: #ef4444;
+      font-size: 13px;
+      margin-top: 6px;
+      display: none;
+    }
+    
+    .error-text.show {
+      display: block;
+    }
+    
+    .progress-indicator {
+      height: 3px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      transition: width 0.4s ease;
+    }
+    
+    .qr-scanner {
+      width: 100%;
+      max-width: 300px;
+      height: 300px;
+      background: linear-gradient(135deg, #667eea15, #764ba215);
+      border: 2px dashed #667eea;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 12px 0;
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Celebration Animations */
+    .celebration-graphic {
+      position: relative;
+      height: 120px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trophy {
+      font-size: 80px;
+      animation: bounce 0.6s ease-in-out infinite, float 3s ease-in-out infinite;
+    }
+
+    .star {
+      position: absolute;
+      font-size: 40px;
+      animation: twinkle 1.5s ease-in-out infinite;
+    }
+
+    .star-1 {
+      top: 0;
+      left: 20px;
+      animation-delay: 0s;
+    }
+
+    .star-2 {
+      top: 0;
+      right: 20px;
+      animation-delay: 0.3s;
+    }
+
+    .star-3 {
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation-delay: 0.6s;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* Confetti Animation */
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      top: -10px;
+      animation: confettiFall 3s linear forwards;
+    }
+
+    .confetti:nth-child(1) {
+      left: 10%;
+      background: #667eea;
+      animation-delay: 0s;
+      transform: rotate(0deg);
+    }
+
+    .confetti:nth-child(2) {
+      left: 20%;
+      background: #764ba2;
+      animation-delay: 0.1s;
+      transform: rotate(45deg);
+    }
+
+    .confetti:nth-child(3) {
+      left: 30%;
+      background: #f59e0b;
+      animation-delay: 0.2s;
+      transform: rotate(90deg);
+    }
+
+    .confetti:nth-child(4) {
+      left: 40%;
+      background: #10b981;
+      animation-delay: 0.3s;
+      transform: rotate(135deg);
+    }
+
+    .confetti:nth-child(5) {
+      left: 50%;
+      background: #667eea;
+      animation-delay: 0.4s;
+      transform: rotate(180deg);
+    }
+
+    .confetti:nth-child(6) {
+      left: 60%;
+      background: #764ba2;
+      animation-delay: 0.5s;
+      transform: rotate(225deg);
+    }
+
+    .confetti:nth-child(7) {
+      left: 70%;
+      background: #f59e0b;
+      animation-delay: 0.6s;
+      transform: rotate(270deg);
+    }
+
+    .confetti:nth-child(8) {
+      left: 80%;
+      background: #10b981;
+      animation-delay: 0.7s;
+      transform: rotate(315deg);
+    }
+
+    @keyframes confettiFall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+ </head>
+ <body class="h-full">
+  <!-- Toast Notification -->
+  <div id="success-toast" class="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg hidden" style="z-index: 9999; animation: slideIn 0.4s ease-out;">
+   <div class="flex items-center gap-2">
+    <span style="font-size:20px;">✅</span>
+    <span class="font-semibold">Your Registration Submitted Successfully!</span>
+   </div>
+  </div>
+  <style>
+   @keyframes slideIn {
+    from {
+     transform: translateX(400px);
+     opacity: 0;
+    }
+    to {
+     transform: translateX(0);
+     opacity: 1;
+    }
+   }
+  </style>
+  <div id="app-container" class="w-full min-h-full py-8 px-4">
+   <!-- Form View -->
+   <div id="form-view" class="max-w-2xl mx-auto">
+    <!-- Header -->
+    <div class="form-card mb-6 p-8 text-center border-t-4 border-transparent" style="border-top-color: #667eea;">
+     <h1 id="form-title" class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-3">Tech Fest Registration</h1>
+     <p id="form-description" class="text-gray-600">Register for exciting technical events and secure your spot today</p>
+    </div><!-- Progress -->
+    <div class="form-card p-6 mb-6">
+     <div class="flex justify-between items-center mb-3">
+      <span class="text-sm font-semibold text-gray-700">Progress: <span id="current-section">1</span>/3</span> <span class="text-sm font-semibold text-purple-600" id="progress-percent">0%</span>
+     </div>
+     <div class="progress-indicator">
+      <div id="progress-fill" class="progress-fill" style="width: 33%;"></div>
+     </div>
+    </div><!-- Section 1: Participant Details -->
+    <div id="section-1" class="section-content">
+     <div class="form-card p-8 mb-6">
+      <div class="section-header">
+       👤 Participant Details
+      </div><!-- Full Name -->
+      <div class="mb-6">
+       <label class="block text-sm font-semibold text-gray-700 mb-3">Full Name <span class="required-asterisk">*</span></label> <input type="text" id="full_name" class="input-field w-full" placeholder="Enter your full name">
+       <p id="full_name_error" class="error-text">This field is required</p>
+      </div><!-- Email -->
+      <div class="mb-6">
+       <label class="block text-sm font-semibold text-gray-700 mb-3">Email Id <span class="required-asterisk">*</span></label> <input type="email" id="email" class="input-field w-full" placeholder="your.email@example.com">
+       <p id="email_error" class="error-text">Please enter a valid email</p>
+      </div><!-- Phone -->
+      <div class="mb-6">
+       <label class="block text-sm font-semibold text-gray-700 mb-3">Phone Number <span class="required-asterisk">*</span></label> <input type="tel" id="phone" class="input-field w-full" placeholder="Enter 10-digit number" maxlength="10">
+       <p id="phone_error" class="error-text">Please enter a valid 10-digit number</p>
+      </div><!-- College Name -->
+      <div class="mb-6">
+      <label class="block text-sm font-semibold text-gray-700 mb-3">
+  College Name <span class="required-asterisk">*</span>
+</label>
+
+<select id="college_name" class="input-field w-full">
+  <option value="">-- Select Your College --</option>
+  <option value="JNTUH University College of Engineering Manthani  ">JNTUH University College of Engineering Manthani </option>
+    <option value="mother theressa college of engineering and technology">Mother theressa college of engineering and technology</option>
+     <option value="Pragathi Degree College, Ramagundam">Pragathi Degree College, Ramagundam</option>
+ <option value="Sri Saraswathi Degree College, Peddapalli">Sri Saraswathi Degree College, Peddapalli</option>
+  <option value="Trinity College of Engineering and Technology  ">Trinity College of Engineering and Technology  </option>
+ <option value="Vikas Degree College, Peddapalli">Vikas Degree College, Peddapalli</option>
+ 
+  <option value="Other">Other</option>
+</select>
+
+<p id="college_name_error" class="error-text">This field is required</p>
+      </div><!-- College ID -->
+      <div class="mb-6">
+       <label class="block text-sm font-semibold text-gray-700 mb-3">Roll Number <span class="required-asterisk">*</span></label> <input type="text" id="college_id" class="input-field w-full" placeholder="Enter your ID or roll number">
+       <p id="college_id_error" class="error-text">This field is required</p>
+      </div><!-- Course -->
+      <div class="mb-6">
+      <label class="block text-sm font-semibold text-gray-700 mb-3">
+  Branch <span class="required-asterisk">*</span>
+</label>
+
+<select id="course_branch" class="input-field w-full">
+  <option value="">-- Select Your B.Tech Branch --</option>
+
+  <option value="Computer Science Engineering">Computer Science Engineering (CSE)</option>
+  <option value="Artificial Intelligence">Computer Science Engineering (AI & ML) (CSM)</option>
+  <option value="Data Science">Data Science (DS)</option>
+  <option value="Information Technology">Information Technology (IT)</option>
+  <option value="Electronics and Communication Engineering">Electronics & Communication Engineering (ECE)</option>
+  <option value="Electrical and Electronics Engineering">Electrical & Electronics Engineering (EEE)</option>
+  <option value="Mechanical Engineering">Mechanical Engineering (ME)</option>
+  <option value="Civil Engineering">Civil Engineering (CE)</option>
+ <option value="Cyber Security">Cyber Security</option>
+ <option value="Mining Engineering">Mining Engineering</option>
+</select>
+
+<p id="course_branch_error" class="error-text">This field is required</p>
+      </div><!-- Year -->
+      <div class="mb-6">
+       <label class="block text-sm font-semibold text-gray-700 mb-4">Year of Study <span class="required-asterisk">*</span></label>
+       <div class="grid grid-cols-2 gap-4">
+        <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition"> <input type="radio" name="year_of_study" value="1st Year" class="radio-custom"> <span class="text-gray-700 font-medium">1st Year</span> </label> <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition"> <input type="radio" name="year_of_study" value="2nd Year" class="radio-custom"> <span class="text-gray-700 font-medium">2nd Year</span> </label> <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition"> <input type="radio" name="year_of_study" value="3rd Year" class="radio-custom"> <span class="text-gray-700 font-medium">3rd Year</span> </label> <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition"> <input type="radio" name="year_of_study" value="4th Year" class="radio-custom"> <span class="text-gray-700 font-medium">4th Year</span> </label>
+       </div>
+       <p id="year_error" class="error-text">Please select your year</p>
+      </div><!-- Gender -->
+      <div class="mb-2">
+       <label class="block text-sm font-semibold text-gray-700 mb-4">Gender <span class="text-gray-400 text-xs">(Optional)</span></label>
+       <div class="grid grid-cols-3 gap-4">
+        <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition"> <input type="radio" name="gender" value="Male" class="radio-custom"> <span class="text-gray-700 font-medium">Male</span> </label> <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition"> <input type="radio" name="gender" value="Female" class="radio-custom"> <span class="text-gray-700 font-medium">Female</span> </label> <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition"> <input type="radio" name="gender" value="Other" class="radio-custom"> <span class="text-gray-700 font-medium">Other</span> </label>
+       </div>
+      </div>
+     </div>
+     <div class="flex justify-end gap-3 mb-6">
+      <button onclick="nextSection(1)" class="btn-primary">Next Step →</button>
+     </div>
+    </div><!-- Section 2: Events & Payment Selection -->
+    <div id="section-2" class="section-content hidden">
+     <div class="form-card p-8 mb-6">
+      <div class="section-header">
+       🎯 Select Events &amp; Payment
+      </div><!-- Events Selection -->
+      <div class="mb-8">
+       <label class="block text-sm font-semibold text-gray-700 mb-4">Choose Your Event(s) <span class="required-asterisk">*</span></label>
+       <div class="space-y-3">
+        <div class="event-item" onclick="toggleEvent(this, 'Web Design Challenge', 10)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Web Design Challenge" data-price="10"> <span class="flex-1"> <span class="font-semibold text-gray-800">🌐 Web Design Challenge</span> <p class="text-xs text-gray-500 mt-1">Create stunning web designs</p></span> <span class="price-tag">₹10</span>
+        </div>
+        <div class="event-item" onclick="toggleEvent(this, 'Tech Quiz', 15)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Tech Quiz" data-price="15"> <span class="flex-1"> <span class="font-semibold text-gray-800">🧠 Tech Quiz</span> <p class="text-xs text-gray-500 mt-1">Test your technical knowledge</p></span> <span class="price-tag">₹15</span>
+        </div>
+        <div class="event-item" onclick="toggleEvent(this, 'Reverse Coding Contest', 10)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Reverse Coding Contest" data-price="10"> <span class="flex-1"> <span class="font-semibold text-gray-800">🔄 Reverse Coding Contest</span> <p class="text-xs text-gray-500 mt-1">Master the art of code reversal</p></span> <span class="price-tag">₹10</span>
+        </div>
+        <div class="event-item" onclick="toggleEvent(this, 'Tech Meme Generating', 15)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Tech Meme Generating" data-price="15"> <span class="flex-1"> <span class="font-semibold text-gray-800">😂 Tech Meme Generating</span> <p class="text-xs text-gray-500 mt-1">Create hilarious tech memes</p></span> <span class="price-tag">₹15</span>
+        </div>
+        <div class="event-item" onclick="toggleEvent(this, 'Debugging Contest', 10)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Debugging Contest" data-price="10"> <span class="flex-1"> <span class="font-semibold text-gray-800">🐛 Debugging Contest</span> <p class="text-xs text-gray-500 mt-1">Find and fix code bugs</p></span> <span class="price-tag">₹10</span>
+        </div>
+        <div class="event-item" onclick="toggleEvent(this, 'Logo Generation', 20)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Logo Generation" data-price="20"> <span class="flex-1"> <span class="font-semibold text-gray-800">🎨 Logo Generation</span> <p class="text-xs text-gray-500 mt-1">Design creative logos</p></span> <span class="price-tag">₹20</span>
+        </div>
+        <div class="event-item" onclick="toggleEvent(this, 'Innovation Summit', 15)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Innovation Summit" data-price="15"> <span class="flex-1"> <span class="font-semibold text-gray-800">💡 Innovation Summit</span> <p class="text-xs text-gray-500 mt-1">Showcase your innovations</p></span> <span class="price-tag">₹15</span>
+        </div>
+        <div class="event-item" onclick="toggleEvent(this, 'Ideathon', 20)">
+         <input type="checkbox" class="event-checkbox event-selector" value="Ideathon" data-price="20"> <span class="flex-1"> <span class="font-semibold text-gray-800">🚀 Ideathon</span> <p class="text-xs text-gray-500 mt-1">Pitch your groundbreaking ideas</p></span> <span class="price-tag">₹20</span>
+        </div>
+       </div>
+       <p id="event_error" class="error-text">Please select at least one event</p>
+      </div><!-- Total Fee -->
+      <div class="fee-box">
+       <div class="fee-box-title">
+        Total Registration Fee
+       </div>
+       <div class="fee-box-amount">
+        ₹<span id="total-fee">0</span>
+       </div>
+      </div><!-- Payment Methods -->
+      <div class="mb-8">
+       <label class="block text-sm font-semibold text-gray-700 mb-4">Payment Method <span class="required-asterisk">*</span></label>
+       <div class="payment-method cursor-pointer" onclick="selectPaymentMethod(this, 'UPI')">
+        <input type="radio" name="payment_mode" value="UPI" class="radio-custom" onchange="updatePaymentDetails()"> <span class="flex-1"> <span class="font-semibold text-gray-800">📱 UPI Payment</span> <p class="text-xs text-gray-500 mt-1">Fast &amp; secure UPI transfer</p></span>
+       </div>
+       <div id="upi-details" class="payment-details-box">
+        <!-- show the upi id so user can also copy/paste if needed -->
+        <p class="text-sm font-semibold text-gray-700 mb-1">UPI ID: <span id="upi-id-display">7780223065@mbk</span></p>
+        <label class="block text-sm font-semibold text-gray-700 mb-3">Scan UPI QR Code</label>
+        <div class="qr-scanner" style="text-align: center; padding: 20px;">
+         <div id="qrcode-container" class="inline-block"></div>
+         <p class="text-sm font-semibold text-gray-700 mt-3">Amount: ₹<span id="qr-amount">0</span></p>
+         <p class="text-xs mt-2" style="color: #9ca3af;"></p>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-4 mb-4">
+         <p class="text-sm font-semibold text-gray-700">Total Registration Fee</p>
+         <p class="text-2xl font-bold text-blue-600">₹<span id="upi-total-fee">0</span></p>
+        </div><!-- File Upload -->
+      <div class="mb-2">
+       <label class="block text-sm font-semibold text-gray-700 mb-3">Upload Payment Screenshot <span class="required-asterisk">*</span></label>
+       <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-purple-400 transition cursor-pointer" onclick="document.getElementById('payment_screenshot').click()">
+        <svg class="w-8 h-8 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <p class="text-sm text-gray-600" id="upload-text">Click to upload or drag and drop</p>
+        <p class="text-xs text-gray-400 mt-1">PNG, JPG up to 5MB</p>
+        <input type="file" id="payment_screenshot" class="hidden" accept="image/*" onchange="verifyPaymentScreenshot(event)">
+       </div>
+       <p id="payment-verify-status" class="text-sm text-green-600 font-semibold mt-3 hidden" style="text-align:center;">✅ Payment Screenshot Verified</p>
+       <p id="payment_screenshot_error" class="error-text">Please upload a screenshot of payment</p>
+      </div>
+     </div>
+     <div class="flex justify-between gap-3 mb-6">
+      <button onclick="prevSection(2)" class="btn-secondary">← Back</button> <button onclick="nextSection(2)" class="btn-primary">Review &amp; Submit →</button>
+     </div>
+    </div><!-- Section 3: Review & Submit -->
+    <div id="section-3" class="section-content hidden">
+     <div class="form-card p-8 mb-6">
+      <div class="section-header">
+       ✅ Review Your Registration
+      </div>
+      <div class="space-y-4">
+       <div class="p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 font-semibold mb-1">Name</p>
+        <p id="review-name" class="text-gray-800 font-medium">-</p>
+       </div>
+       <div class="p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 font-semibold mb-1">Email</p>
+        <p id="review-email" class="text-gray-800 font-medium">-</p>
+       </div>
+       <div class="p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 font-semibold mb-1">Selected Events</p>
+        <p id="review-events" class="text-gray-800 font-medium">-</p>
+       </div>
+       <div class="p-4 bg-gray-50 rounded-lg">
+        <p class="text-xs text-gray-500 font-semibold mb-1">Payment Method</p>
+        <p id="review-payment" class="text-gray-800 font-medium">-</p>
+       </div>
+       <div class="fee-box">
+        <div class="fee-box-title">
+         Total Amount
+        </div>
+        <div class="fee-box-amount">
+         ₹<span id="review-total">0</span>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="flex justify-between gap-3 mb-6">
+      <button onclick="prevSection(3)" class="btn-secondary">← Edit</button> <button onclick="submitForm()" class="btn-primary" id="submit-btn" style="opacity: 1; cursor: pointer;">Complete Registration 🎉</button>
+     </div>
+    </div><!-- Success View -->
+    <div id="success-view" class="hidden max-w-2xl mx-auto success-animation"><!-- Confetti Animation -->
+     <div class="confetti-container">
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+      <div class="confetti"></div>
+     </div>
+     <div class="form-card p-8 text-center border-t-4 border-transparent overflow-hidden relative" style="border-top-color: #10b981;"><!-- Celebration Graphic -->
+      <div class="celebration-graphic mb-6">
+       <div class="trophy">
+        🏆
+       </div>
+       <div class="star star-1">
+        ⭐
+       </div>
+       <div class="star star-2">
+        ⭐
+       </div>
+       <div class="star star-3">
+        ⭐
+       </div>
+      </div>
+      <h2 class="text-4xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mb-3">Your Registration is Successful! ✅</h2>
+      <p class="text-2xl font-semibold text-gray-800 mb-2">Welcome to Tech Fest 2024! 🚀</p>
+      <p class="text-gray-600 mb-8 text-lg">We're absolutely thrilled to have you on board! Get ready for an unforgettable experience packed with innovation, challenges, and incredible opportunities.</p>
+      <div class="bg-gradient-to-br from-purple-50 via-indigo-50 to-purple-50 rounded-xl p-8 mb-8 text-left border-l-4 border-purple-600 shadow-lg" style="animation: slideUp 1s ease-out;">
+       <h3 class="font-bold text-gray-900 mb-6 text-lg">📋 Your Registration Details</h3>
+       <div id="submission-summary" class="text-sm text-gray-700 space-y-3"></div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" style="animation: slideUp 1.1s ease-out;">
+       <div class="bg-gradient-to-br from-blue-50 to-cyan-50 border-l-4 border-blue-500 rounded-lg p-5">
+        <p class="text-2xl mb-1">✉️</p>
+        <p class="text-sm font-semibold text-blue-900 mb-1">Check Your Email</p>
+        <p class="text-xs text-blue-700">Confirmation details sent</p>
+       </div>
+       <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border-l-4 border-emerald-500 rounded-lg p-5">
+        <p class="text-2xl mb-1">🎯</p>
+        <p class="text-sm font-semibold text-emerald-900 mb-1">Get Ready</p>
+        <p class="text-xs text-emerald-700">Event details will follow</p>
+       </div>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center" style="animation: slideUp 1.2s ease-out;"><button onclick="submitAnother()" class="btn-primary flex-1">Register Another Person 👥</button> <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="btn-secondary flex-1">Back to Top ⬆️</button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+    const eventPrices = {
+      'Web Design Challenge': 10,
+      'Tech Quiz': 15,
+      'Reverse Coding Contest': 10,
+      'Tech Meme Generating': 15,
+      'Debugging Contest': 10,
+      'Logo Generation': 20,
+      'Innovation Summit': 15,
+      'Ideathon': 20
+    };
+
+    const defaultConfig = {
+      form_title: 'Tech Fest Registration',
+      form_description: 'Register for exciting technical events and secure your spot today!'
+    };
+
+    let currentSection = 1;
+    let registrations = [];
+    let totalFee = 0;
+    let paymentVerified = false;
+
+    // Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange: async (config) => {
+          document.getElementById('form-title').textContent = config.form_title || defaultConfig.form_title;
+          document.getElementById('form-description').textContent = config.form_description || defaultConfig.form_description;
+        },
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ['form_title', config.form_title || defaultConfig.form_title],
+          ['form_description', config.form_description || defaultConfig.form_description]
+        ])
+      });
+    }
+
+    // Data SDK
+    const dataHandler = {
+      onDataChanged(data) {
+        registrations = data;
+      }
+    };
+
+    if (window.dataSdk) {
+      window.dataSdk.init(dataHandler);
+    }
+
+    function verifyPaymentScreenshot(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('⚠️ Please upload a valid image file (PNG, JPG, etc.)');
+        return;
+      }
+      
+      // Validate file size (5MB max)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('⚠️ File size must be less than 5MB');
+        return;
+      }
+      
+      // Payment verified
+      paymentVerified = true;
+      const submitBtn = document.getElementById('submit-btn');
+      const statusMsg = document.getElementById('payment-verify-status');
+      const uploadText = document.getElementById('upload-text');
+      
+      if (uploadText) {
+        uploadText.textContent = '✅ ' + file.name + ' uploaded';
+      }
+      
+      if (statusMsg) {
+        statusMsg.classList.remove('hidden');
+      }
+      
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+      }
+    }
+
+    function toggleEvent(element, eventName, price) {
+      const checkbox = element.querySelector('.event-checkbox');
+      checkbox.checked = !checkbox.checked;
+      
+      if (checkbox.checked) {
+        element.classList.add('selected');
+        totalFee += price;
+      } else {
+        element.classList.remove('selected');
+        totalFee -= price;
+      }
+      
+      document.getElementById('total-fee').textContent = totalFee;
+      document.getElementById('upi-total-fee').textContent = totalFee;
+      document.getElementById('qr-amount').textContent = totalFee;
+      
+      // Regenerate QR code if UPI is selected
+      if (document.querySelector('input[name="payment_mode"]:checked')?.value === 'UPI') {
+        generateUPIQRCode(totalFee);
+      }
+    }
+
+    function selectPaymentMethod(element, method) {
+      const radio = element.querySelector('input[type="radio"]');
+      radio.checked = true;
+      
+      document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+      element.classList.add('selected');
+      
+      updatePaymentDetails();
+    }
+
+    function generateUPIQRCode(amount) {
+      const upiId = '7780223065@mbk';
+      const payeeName = 'TechFest';
+      const timestamp = new Date().getTime();
+      const upiString = `upi://pay?pa=${upiId}&pn=${payeeName}&am=${amount}&tr=TECHFEST${timestamp}`;
+      
+      // update the displayed UPI id
+      const upiDisplayEl = document.getElementById('upi-id-display');
+      if (upiDisplayEl) {
+        upiDisplayEl.textContent = upiId;
+      }
+      
+      // Clear previous QR code
+      const container = document.getElementById('qrcode-container');
+      container.innerHTML = '';
+      
+      // Generate new QR code
+      new QRCode(container, {
+        text: upiString,
+        width: 200,
+        height: 200,
+        colorDark: '#667eea',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    function updatePaymentDetails() {
+      const paymentMode = document.querySelector('input[name="payment_mode"]:checked')?.value;
+      
+      const upiDetailsEl = document.getElementById('upi-details');
+      const bankDetailsEl = document.getElementById('bank-details');
+
+      if (upiDetailsEl) upiDetailsEl.classList.remove('show');
+      if (bankDetailsEl) bankDetailsEl.classList.remove('show');
+      
+      if (paymentMode === 'UPI') {
+        if (upiDetailsEl) upiDetailsEl.classList.add('show');
+        document.getElementById('upi-total-fee').textContent = totalFee;
+        document.getElementById('qr-amount').textContent = totalFee;
+        generateUPIQRCode(totalFee);
+      } else {
+        if (paymentMode === 'Bank Transfer' && bankDetailsEl) {
+          bankDetailsEl.classList.add('show');
+        }
+      }
+    }
+
+    function showSection(num) {
+      document.querySelectorAll('.section-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById('section-' + num).classList.remove('hidden');
+      currentSection = num;
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateProgress() {
+      const percent = (currentSection / 3) * 100;
+      document.getElementById('current-section').textContent = currentSection;
+      document.getElementById('progress-percent').textContent = Math.round(percent) + '%';
+      document.getElementById('progress-fill').style.width = percent + '%';
+    }
+
+    function clearError(id) {
+      const error = document.getElementById(id);
+      if (error) error.classList.remove('show');
+    }
+
+    function showError(id) {
+      const error = document.getElementById(id);
+      if (error) error.classList.add('show');
+    }
+
+    function validateSection1() {
+      let valid = true;
+      const fields = ['full_name', 'email', 'phone', 'college_name', 'college_id', 'course_branch'];
+      
+      fields.forEach(field => {
+        const value = document.getElementById(field).value.trim();
+        if (!value) {
+          showError(field + '_error');
+          valid = false;
+        } else {
+          clearError(field + '_error');
+        }
+      });
+
+      const email = document.getElementById('email').value;
+      if (email && !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        showError('email_error');
+        valid = false;
+      }
+
+      const phone = document.getElementById('phone').value;
+      if (phone && !phone.match(/^[0-9]{10}$/)) {
+        showError('phone_error');
+        valid = false;
+      }
+
+      const year = document.querySelector('input[name="year_of_study"]:checked');
+      if (!year) {
+        showError('year_error');
+        valid = false;
+      } else {
+        clearError('year_error');
+      }
+
+      return valid;
+    }
+
+    function validateSection2() {
+      let valid = true;
+      const eventsSelected = document.querySelectorAll('.event-selector:checked').length;
+      
+      if (eventsSelected === 0) {
+        showError('event_error');
+        valid = false;
+      } else {
+        clearError('event_error');
+      }
+
+      const payment = document.querySelector('input[name="payment_mode"]:checked');
+      if (!payment) {
+        showError('payment_error');
+        valid = false;
+      } else {
+        clearError('payment_error');
+      }
+
+      // require screenshot upload
+      if (!paymentVerified) {
+        showError('payment_screenshot_error');
+        valid = false;
+      } else {
+        clearError('payment_screenshot_error');
+      }
+
+      return valid;
+    }
+
+    function nextSection(current) {
+      let valid = true;
+      
+      if (current === 1) {
+        valid = validateSection1();
+      } else if (current === 2) {
+        valid = validateSection2();
+        if (valid) {
+          populateReview();
+        }
+      }
+
+      if (valid) {
+        showSection(current + 1);
+      }
+    }
+
+    function prevSection(current) {
+      showSection(current - 1);
+      // Reset payment verification if going back from section 3
+      if (current === 3) {
+        paymentVerified = false;
+        const statusMsg = document.getElementById('payment-verify-status');
+        const submitBtn = document.getElementById('submit-btn');
+        const uploadText = document.getElementById('upload-text');
+        const fileInput = document.getElementById('payment_screenshot');
+        
+        if (uploadText) {
+          uploadText.textContent = 'Click to upload or drag and drop';
+        }
+        
+        if (statusMsg) {
+          statusMsg.classList.add('hidden');
+        }
+        
+        if (fileInput) {
+          fileInput.value = '';
+        }
+        
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = '0.6';
+          submitBtn.style.cursor = 'not-allowed';
+        }
+      }
+    }
+
+    function populateReview() {
+      document.getElementById('review-name').textContent = document.getElementById('full_name').value;
+      document.getElementById('review-email').textContent = document.getElementById('email').value;
+      
+      const events = Array.from(document.querySelectorAll('.event-selector:checked')).map(el => el.value).join(', ');
+      document.getElementById('review-events').textContent = events || 'None selected';
+      
+      const payment = document.querySelector('input[name="payment_mode"]:checked')?.value || '-';
+      document.getElementById('review-payment').textContent = payment;
+      
+      document.getElementById('review-total').textContent = totalFee;
+    }
+
+    async function submitForm() {
+      // Payment screenshot is optional - removed required check
+      // if (!paymentVerified) {
+      //   alert('🚫 Please confirm your payment before submitting!');
+      //   return;
+      // }
+      
+      const submitBtn = document.getElementById('submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Processing...';
+
+      const selectedEvents = Array.from(document.querySelectorAll('.event-selector:checked')).map(el => el.value).join(', ');
+      
+      // Get payment screenshot if uploaded (optional now)
+      let screenshotData = '';
+      const fileInput = document.getElementById('payment_screenshot');
+      if (fileInput && fileInput.files[0]) {
+        try {
+          screenshotData = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.onerror = () => reject(new Error('Failed to read file'));
+            reader.readAsDataURL(fileInput.files[0]);
+          });
+        } catch (e) {
+          console.warn('⚠️ Screenshot conversion failed:', e);
+          screenshotData = ''; // Continue without screenshot
+        }
+      }
+
+      const formData = {
+        full_name: document.getElementById('full_name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        college_name: document.getElementById('college_name').value,
+        college_id: document.getElementById('college_id').value,
+        course_branch: document.getElementById('course_branch').value,
+        year_of_study: document.querySelector('input[name="year_of_study"]:checked')?.value || '',
+        gender: document.querySelector('input[name="gender"]:checked')?.value || 'Not specified',
+        technical_event: selectedEvents,
+        total_fee: totalFee.toString(),
+        payment_mode: document.querySelector('input[name="payment_mode"]:checked')?.value || '',
+        screenshot: screenshotData,
+        transaction_id: '',
+        upi_id: document.getElementById('upi_id')?.value || '',
+        bank_account: document.getElementById('account_number')?.value || '',
+        submitted_at: new Date().toISOString()
+      };
+
+      // Save to MongoDB via API
+      try {
+        console.log('📤 Sending registration data to API...');
+        
+        const response = await fetch('/api/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        console.log('📨 Response Status:', response.status);
+        const result = await response.json();
+        console.log('📨 Response Data:', result);
+        
+        if (response.ok && result.success) {
+          console.log('✅ Registration saved successfully to MongoDB!');
+          showSuccess(formData);
+        } else {
+          console.error('❌ Error from server:', result);
+          alert('⚠️ Error saving registration: ' + (result.message || 'Unknown error'));
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Complete Registration 🎉';
+        }
+      } catch (error) {
+        console.error('⚠️ Submission Error:', error);
+        alert('⚠️ Connection error: ' + error.message + '\n\nPlease check if the server is running on http://localhost:5000');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Complete Registration 🎉';
+      }
+      
+      // Also save to dataSdk if available
+      if (window.dataSdk) {
+        try {
+          await window.dataSdk.create(formData);
+        } catch (e) {
+          console.warn('DataSdk not available:', e);
+        }
+      }
+    }
+
+    function showSuccess(data) {
+      // Show toast notification
+      const toast = document.getElementById('success-toast');
+      if (toast) {
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+          toast.classList.add('hidden');
+        }, 3000);
+      }
+      
+      document.getElementById('form-view').classList.add('hidden');
+      document.getElementById('success-view').classList.remove('hidden');
+      
+      const summary = document.getElementById('submission-summary');
+      summary.innerHTML = `
+        <p><strong>Name:</strong> ${data.full_name}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>College:</strong> ${data.college_name}</p>
+        <p><strong>Events:</strong> ${data.technical_event}</p>
+        <p><strong>Total Fee:</strong> ₹${data.total_fee}</p>
+        <p><strong>Payment Mode:</strong> ${data.payment_mode}</p>
+      `;
+    }
+
+    function submitAnother() {
+      document.getElementById('success-view').classList.add('hidden');
+      document.getElementById('form-view').classList.remove('hidden');
+      
+      document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]').forEach(input => {
+        input.value = '';
+      });
+      document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+        input.checked = false;
+      });
+      document.querySelectorAll('.event-item').forEach(item => item.classList.remove('selected'));
+      document.querySelectorAll('.payment-method').forEach(item => item.classList.remove('selected'));
+      document.querySelectorAll('[class*="error-text"]').forEach(error => error.classList.remove('show'));
+      
+      // Reset payment verification
+      paymentVerified = false;
+      const statusMsg = document.getElementById('payment-verify-status');
+      const submitBtn = document.getElementById('submit-btn');
+      const uploadText = document.getElementById('upload-text');
+      const fileInput = document.getElementById('payment_screenshot');
+      
+      if (uploadText) {
+        uploadText.textContent = 'Click to upload or drag and drop';
+      }
+      
+      if (statusMsg) {
+        statusMsg.classList.add('hidden');
+      }
+      
+      if (fileInput) {
+        fileInput.value = '';
+      }
+      
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.6';
+        submitBtn.style.cursor = 'not-allowed';
+      }
+      
+      totalFee = 0;
+      document.getElementById('total-fee').textContent = '0';
+      
+      showSection(1);
+    }
+
+    updateProgress();
+  </script>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d4dc52412d831b8',t:'MTc3MjI1OTE0NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9d4dffc8e53a31b8',t:'MTc3MjI2MTU0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
